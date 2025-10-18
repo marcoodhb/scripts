@@ -20,6 +20,8 @@ if [ ! -d "$CLANG_BIN_DIR" ]; then
 fi
 echo "Toolchain encontrado en: $CLANG_BIN_DIR"
 
+export PATH="$CLANG_BIN_DIR:$PATH"
+
 echo "...Generando .config..."
 make -C kernel/xiaomi/earth O=kernel/xiaomi/earth/out \
     ARCH=arm64 \
