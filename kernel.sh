@@ -9,10 +9,10 @@ tar -xzf "$TOOLCHAIN_ARCHIVE_PATH" -C "$TOOLCHAIN_EXTRACT_DIR"
 
 echo "...Actualizando submódulos del kernel..."
 cd kernel/xiaomi/earth
-git submodule update --init --recursive || true
+git submodule update --init --recursive
 cd ../../..
 
-CLANG_BIN_DIR=$(find "$(pwd)/$TOOLCHAIN_EXTRACT_DIR" -type d -name "bin" | head -n 1)
+CLANG_BIN_DIR="$(pwd)/$TOOLCHAIN_EXTRACT_DIR/bin"
 
 if [ -z "$CLANG_BIN_DIR" ]; then
     echo "ERROR: No se pudo encontrar la carpeta bin del toolchain."
