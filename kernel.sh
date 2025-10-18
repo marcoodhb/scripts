@@ -77,5 +77,6 @@ if [ ! -f "$KERNEL_IMAGE_PATH" ]; then
 fi
 
 echo "export TARGET_PREBUILT_KERNEL=$KERNEL_IMAGE_PATH" > kernel_env.sh
+echo "$KERNEL_IMAGE_PATH" > kernel_image_path.txt
 
 echo "--- Kernel completado ---"
