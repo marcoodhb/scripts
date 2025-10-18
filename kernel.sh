@@ -14,8 +14,8 @@ cd ../../..
 
 CLANG_BIN_DIR="$(pwd)/$TOOLCHAIN_EXTRACT_DIR/bin"
 
-if [ -z "$CLANG_BIN_DIR" ]; then
-    echo "ERROR: No se pudo encontrar la carpeta bin del toolchain."
+if [ ! -d "$CLANG_BIN_DIR" ]; then
+    echo "ERROR: El directorio del toolchain '$CLANG_BIN_DIR' no existe"
     exit 1
 fi
 echo "Toolchain encontrado en: $CLANG_BIN_DIR"
