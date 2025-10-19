@@ -21,9 +21,16 @@ fi
 echo "Toolchain encontrado en: $CLANG_BIN_DIR"
 
 export PATH="$CLANG_BIN_DIR:$PATH"
+PROJECT_ROOT=$(pwd)
+KERNEL_SOURCE_DIR="$PROJECT_ROOT/kernel/xiaomi/earth"
+KERNEL_OUTPUT_DIR="$KERNEL_SOURCE_DIR/out"
+
+echo "Directorio Raíz del Proyecto: $PROJECT_ROOT"
+echo "Directorio de Fuentes del Kernel: $KERNEL_SOURCE_DIR"
+echo "Directorio de Salida del Kernel: $KERNEL_OUTPUT_DIR"
 
 echo "...Generando .config..."
-make -C kernel/xiaomi/earth O=kernel/xiaomi/earth/out \
+make -C "$KERNEL_SOURCE_DIR" O="$KERNEL_OUTPUT_DIR" \
     ARCH=arm64 \
     SUBARCH=arm64 \
     CROSS_COMPILE=aarch64-linux-gnu- \
@@ -47,7 +54,7 @@ make -C kernel/xiaomi/earth O=kernel/xiaomi/earth/out \
     earth_defconfig
 
 echo "---Build---"
-make -C kernel/xiaomi/earth O=kernel/xiaomi/earth/out \
+make -C "$KERNEL_SOURCE_DIR" O="$KERNEL_OUTPUT_DIR" \
     ARCH=arm64 \
     SUBARCH=arm64 \
     CROSS_COMPILE=aarch64-linux-gnu- \
@@ -69,12 +76,15 @@ make -C kernel/xiaomi/earth O=kernel/xiaomi/earth/out \
     HOSTLD="$CLANG_BIN_DIR/ld.lld" \
     -j$(nproc --all)
 
-KERNEL_IMAGE_PATH=$(realpath "kernel/xiaomi/earth/out/arch/arm64/boot/Image.gz")
+KERNEL_IMAGE_PATH="$KERNEL_OUTPUT_DIR/arch/arm64/boot/Image.gz"
 
 if [ ! -f "$KERNEL_IMAGE_PATH" ]; then
-    echo "ERROR: No se encontró el archivo Image.gz"
+    echo "ERROR: El archivo Image.gz no se encontró en la ruta absoluta esperada"
+    echo "Ruta buscada: $KERNEL_IMAGE_PATH"
     exit 1
 fi
+
+echo "Kernel Image.gz encontrado en: $KERNEL_IMAGE_PATH"
 
 echo "export TARGET_PREBUILT_KERNEL=$KERNEL_IMAGE_PATH" > kernel_env.sh
 echo "$KERNEL_IMAGE_PATH" > patH.txt
