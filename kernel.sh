@@ -26,9 +26,6 @@ PROJECT_ROOT=$(pwd)
 KERNEL_SOURCE_DIR="$PROJECT_ROOT/kernel/xiaomi/earth"
 KERNEL_OUTPUT_DIR="$KERNEL_SOURCE_DIR/out"
 
-echo "Directorio Raíz del Proyecto: $PROJECT_ROOT"
-echo "Directorio de Fuentes del Kernel: $KERNEL_SOURCE_DIR"
-echo "Directorio de Salida del Kernel: $KERNEL_OUTPUT_DIR"
 
 echo "...Generando .config..."
 make -C "$KERNEL_SOURCE_DIR" O="$KERNEL_OUTPUT_DIR" \
