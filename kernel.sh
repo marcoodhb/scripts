@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-
 TOOLCHAIN_ARCHIVE_PATH="my-toolchain/21.0.0.tar.gz"
 TOOLCHAIN_EXTRACT_DIR="my-toolchain/extracted"
 mkdir -p "$TOOLCHAIN_EXTRACT_DIR"
@@ -20,7 +19,9 @@ if [ ! -d "$CLANG_BIN_DIR" ]; then
 fi
 echo "Toolchain encontrado en: $CLANG_BIN_DIR"
 
+OLD_PATH="$PATH"
 export PATH="$CLANG_BIN_DIR:$PATH"
+
 PROJECT_ROOT=$(pwd)
 KERNEL_SOURCE_DIR="$PROJECT_ROOT/kernel/xiaomi/earth"
 KERNEL_OUTPUT_DIR="$KERNEL_SOURCE_DIR/out"
@@ -76,17 +77,17 @@ make -C "$KERNEL_SOURCE_DIR" O="$KERNEL_OUTPUT_DIR" \
     HOSTLD="$CLANG_BIN_DIR/ld.lld" \
     -j$(nproc --all)
 
+export PATH="$OLD_PATH"
+
+CUSTOM_KERNEL_ARTIFACTS_DIR="$PROJECT_ROOT/build_cache"
+mkdir -p "$CUSTOM_KERNEL_ARTIFACTS_DIR"
 KERNEL_IMAGE_PATH="$KERNEL_OUTPUT_DIR/arch/arm64/boot/Image.gz"
 
 if [ ! -f "$KERNEL_IMAGE_PATH" ]; then
-    echo "ERROR: El archivo Image.gz no se encontró en la ruta absoluta esperada"
-    echo "Ruta buscada: $KERNEL_IMAGE_PATH"
+    echo "ERROR: La compilación del kernel falló. No se encontró Image.gz."
     exit 1
 fi
 
-echo "Kernel Image.gz encontrado en: $KERNEL_IMAGE_PATH"
+cp "$KERNEL_IMAGE_PATH" "$CUSTOM_KERNEL_ARTIFACTS_DIR/Image.gz"
 
-echo "export TARGET_PREBUILT_KERNEL=$KERNEL_IMAGE_PATH" > kernel_env.sh
-echo "$KERNEL_IMAGE_PATH" > patH.txt
-
-echo "--- Kernel completado ---"
+echo "--- Kernel completado y guardado en $CUSTOM_KERNEL_ARTIFACTS_DIR ---"
