@@ -8,7 +8,7 @@ tar -xzf "$TOOLCHAIN_ARCHIVE_PATH" -C "$TOOLCHAIN_EXTRACT_DIR"
 
 echo "...Actualizando submódulos del kernel..."
 cd kernel/xiaomi/earth
-git submodule sync --recursive
+git submodule deinit -f --all
 git submodule update --init --recursive
 cd ../../..
 
