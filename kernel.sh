@@ -6,12 +6,6 @@ TOOLCHAIN_EXTRACT_DIR="my-toolchain/extracted"
 mkdir -p "$TOOLCHAIN_EXTRACT_DIR"
 tar -xzf "$TOOLCHAIN_ARCHIVE_PATH" -C "$TOOLCHAIN_EXTRACT_DIR"
 
-echo "...Actualizando submódulos del kernel..."
-cd kernel/xiaomi/earth
-git submodule deinit -f --all
-git submodule update --init --recursive
-cd ../../..
-
 CLANG_BIN_DIR="$(pwd)/$TOOLCHAIN_EXTRACT_DIR/bin"
 
 if [ ! -d "$CLANG_BIN_DIR" ]; then
